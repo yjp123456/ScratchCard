@@ -75,27 +75,23 @@ public class ScratchCardView extends ImageView {
         //DST_OUT =》[Da * (1 - Sa), Dc * (1 - Sa)]，绘制对象是背景，透明度等于1-原颜色透明度（背景透明度），颜色等于目标颜色（图片）乘于1-原颜色透明度
         //如果背景透明度为1，那么图片就不会画上去，画的是背景
         mOutterPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+        Drawable drawable = getDrawable();
+        // 初始化bitmap
+        mBitmap = Bitmap.createBitmap(
+                getWidth(),
+                getHeight(),
+                drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
+                        : Bitmap.Config.RGB_565);
+
+        mCanvas = new Canvas(mBitmap);//mBitmap作为canvas绘画的对象
+        drawable.setBounds(0, 0, getWidth(), getHeight());
+        drawable.draw(mCanvas);//把drawable画进mCanvas
         setUpBackPaint();
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        int width = getMeasuredWidth();
-        int height = getMeasuredHeight();
-        Drawable drawable = getDrawable();
-        // 初始化bitmap
-        mBitmap = Bitmap.createBitmap(
-                width,
-                height,
-                drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
-                        : Bitmap.Config.RGB_565);
-
-        mCanvas = new Canvas(mBitmap);
-        drawable.setBounds(0, 0, width, height);
-        drawable.draw(mCanvas);
-
     }
 
     @Override
