@@ -41,6 +41,7 @@ public class ScratchCardView extends ImageView {
     private Rect mTextBound = new Rect();
     private String mText = "500,0000,000";
     private boolean isComplete = false;
+    private boolean isInit = false;
 
     /**
      * 初始化canvas的绘制用的画笔
@@ -56,17 +57,17 @@ public class ScratchCardView extends ImageView {
 
     public ScratchCardView(Context context) {
         this(context, null);
-        init();
+
     }
 
     public ScratchCardView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
-        init();
+
     }
 
     public ScratchCardView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init();
+
     }
 
     private void init() {
@@ -96,7 +97,10 @@ public class ScratchCardView extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        // canvas.drawBitmap(mBackBitmap, 0, 0, null);
+        if(!isInit){
+            init();
+            isInit = true;
+        }
         //绘制奖项
         canvas.drawText(mText, getWidth() / 2 - mTextBound.width() / 2,
                 getHeight() / 2 + mTextBound.height() / 2, mBackPint);
@@ -120,6 +124,7 @@ public class ScratchCardView extends ImageView {
         int y = (int) event.getY();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
+                mPath.reset();
                 mLastX = x;
                 mLastY = y;
                 mPath.moveTo(mLastX, mLastY);
