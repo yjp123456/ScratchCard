@@ -76,8 +76,9 @@ public class ScratchCardView extends ImageView {
         mPath = new Path();
         mOutterPain = new Paint();
 
-        //DST_OUT =》[Da * (1 - Sa), Dc * (1 - Sa)]，绘制对象是背景，透明度等于1-原颜色透明度（背景透明度），颜色等于目标颜色（图片）乘于1-原颜色透明度
-        //如果背景透明度为1，那么图片就不会画上去，画的是背景
+        /*DST_OUT =》[Da * (1 - Sa), Dc * (1 - Sa)]，D代表即将画上去的图片，S代表背景，
+        透明度等于自身透明度乘于1-原颜色透明度（背景透明度），颜色等于自身颜色乘于1-源颜色透明度
+        如果背景透明度为1，那么图片就不会画上去*/
         mOutterPain.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
         Drawable drawable = getDrawable();
         // 初始化bitmap
@@ -100,7 +101,7 @@ public class ScratchCardView extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if(!isInit){
+        if (!isInit) {
             init();
             isInit = true;
         }
