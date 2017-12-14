@@ -21,11 +21,11 @@ public class ScratchCardView extends ImageView {
     /**
      * 绘制线条的Paint,即用户手指绘制Path
      */
-    private Paint mOutterPaint = new Paint();
+    private Paint mOutterPain;
     /**
      * 记录用户绘制的Path
      */
-    private Path mPath = new Path();
+    private Path mPath;
     /**
      * 内存中创建的Canvas
      */
@@ -37,8 +37,8 @@ public class ScratchCardView extends ImageView {
 
     private int mLastX;
     private int mLastY;
-    private Paint mBackPint = new Paint();
-    private Rect mTextBound = new Rect();
+    private Paint mBackPint;
+    private Rect mTextBound;
     private String mText = "500,0000,000";
     private boolean isComplete = false;
     private boolean isInit = false;
@@ -47,6 +47,8 @@ public class ScratchCardView extends ImageView {
      * 初始化canvas的绘制用的画笔
      */
     private void setUpBackPaint() {
+        mBackPint = new Paint();
+        mTextBound = new Rect();
         mBackPint.setStyle(Paint.Style.FILL);
         mBackPint.setTextScaleX(2f);
         mBackPint.setColor(Color.DKGRAY);
@@ -72,10 +74,11 @@ public class ScratchCardView extends ImageView {
 
     private void init() {
         mPath = new Path();
+        mOutterPain = new Paint();
 
         //DST_OUT =》[Da * (1 - Sa), Dc * (1 - Sa)]，绘制对象是背景，透明度等于1-原颜色透明度（背景透明度），颜色等于目标颜色（图片）乘于1-原颜色透明度
         //如果背景透明度为1，那么图片就不会画上去，画的是背景
-        mOutterPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+        mOutterPain.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
         Drawable drawable = getDrawable();
         // 初始化bitmap
         mBitmap = Bitmap.createBitmap(
@@ -114,7 +117,7 @@ public class ScratchCardView extends ImageView {
      * 绘制线条
      */
     private void drawPath() {
-        mCanvas.drawPath(mPath, mOutterPaint);
+        mCanvas.drawPath(mPath, mOutterPain);
     }
 
     @Override
